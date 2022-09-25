@@ -1,7 +1,6 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 plugins {
-    kotlin("jvm") version "1.4.30"
+    kotlin("jvm") version "1.7.10"
+    id("org.jlleitschuh.gradle.ktlint") version "10.2.0"
 }
 
 group = "com.github.caay2000"
@@ -11,20 +10,17 @@ repositories {
     mavenCentral()
 }
 
-dependencies {
-
-    implementation("ch.qos.logback:logback-classic:1.2.3")
-
-    testImplementation(kotlin("test-junit5"))
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.6.0")
-    testImplementation("org.assertj:assertj-core:3.14.0")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.6.0")
-}
-
 tasks.test {
     useJUnitPlatform()
 }
 
-tasks.withType<KotlinCompile>() {
-    kotlinOptions.jvmTarget = "11"
+dependencies {
+    testImplementation(kotlin("test"))
+    testImplementation("org.jetbrains.kotlin:kotlin-stdlib:1.7.10")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.9.0")
+    testImplementation("org.assertj:assertj-core:3.23.1")
+    testImplementation("org.mockito.kotlin:mockito-kotlin:4.0.0")
+    testImplementation("io.github.microutils:kotlin-logging:3.0.0")
+    testImplementation("ch.qos.logback:logback-classic:1.4.1")
 }
