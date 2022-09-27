@@ -72,8 +72,8 @@ sent!
 }
 ```
 
-This key is wrong and shouldn't be used, as any request you do to find, will return always the same value! The correct
-approach should be :pointdown:
+This key is wrong and shouldn't be used, as any request you do to find, will return always the same value! A correct
+approach could be:
 
 ```kotlin
     fun find(id: UUID) {
