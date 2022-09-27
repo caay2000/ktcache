@@ -1,7 +1,6 @@
 package com.github.caay2000.ktcache
 
 data class KtCacheStats(
-    val cacheName: String,
     val size: Int,
     val accessCount: Int,
     val hitCount: Int,

@@ -1,11 +1,12 @@
 package com.github.caay2000.ktcache.internal
 
-import java.util.UUID
+import com.github.caay2000.ktcache.internal.KtCacheContext.Companion.updateTotalStatistics
 
-internal class KtCacheObject(cacheName: String = "ThreadId-${Thread.currentThread().id}--${UUID.randomUUID()}") {
+internal class KtCacheObject {
 
     private val cacheMap: MutableMap<String, Any?> = mutableMapOf()
-    private val statistics: KtCacheStats = KtCacheStats(cacheName)
+    private val statistics: KtCacheStats = KtCacheStats()
+
     var openCounter = 0
 
     fun getItemOrSet(key: String, block: () -> Any?): Any? {
@@ -28,7 +29,6 @@ internal class KtCacheObject(cacheName: String = "ThreadId-${Thread.currentThrea
         }
 
     private fun openCacheContext() {
-        if (openCounter == 0) clean()
         openCounter++
     }
 
@@ -36,11 +36,13 @@ internal class KtCacheObject(cacheName: String = "ThreadId-${Thread.currentThrea
         openCounter--
         if (openCounter <= 0) {
             openCounter = 0
+            clean()
         }
     }
 
     fun clean() {
         cacheMap.clear()
+        updateTotalStatistics(statistics)
         statistics.clean()
     }
 

@@ -8,10 +8,11 @@ object KtCache {
 
     fun <T> cacheContext(block: () -> T): T = ktCacheContext.cacheContext(block)
 
-    fun clean() = ktCacheContext.clean()
-
     val stats: KtCacheStats
         get() = ktCacheContext.stats.toCacheStats()
+
+    val totalStats: KtCacheStats
+        get() = ktCacheContext.totalStats.toCacheStats()
 
     fun <T> cached(key: String, block: () -> T?): T? {
         return ktCacheContext.useCache(key, block)
@@ -19,7 +20,6 @@ object KtCache {
 
     private fun com.github.caay2000.ktcache.internal.KtCacheStats.toCacheStats() =
         KtCacheStats(
-            cacheName = this.cacheName,
             size = this.size,
             accessCount = this.accessCount,
             hitCount = this.hitCount,

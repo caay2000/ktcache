@@ -9,6 +9,27 @@ internal class KtCacheContext {
     val stats: KtCacheStats
         get() = getCacheObject().statistics()
 
+    val totalStats: KtCacheStats
+        get() = totalStatistics
+
+    internal companion object {
+
+        private var totalStatistics: KtCacheStats = KtCacheStats()
+
+        private fun KtCacheStats.update(ktCacheStats: KtCacheStats): KtCacheStats =
+            KtCacheStats(
+                size = this.size + ktCacheStats.size,
+                accessCount = this.accessCount + ktCacheStats.accessCount,
+                hitCount = this.hitCount + ktCacheStats.hitCount,
+                missCount = this.missCount + ktCacheStats.missCount
+            )
+
+        @Synchronized
+        fun updateTotalStatistics(stats: KtCacheStats) {
+            totalStatistics = totalStatistics.update(stats)
+        }
+    }
+
     @Suppress("UNCHECKED_CAST")
     fun <T : Any> useCache(key: String, block: () -> T?): T? =
         if (getCacheObject().openCounter > 0) {
@@ -18,9 +39,6 @@ internal class KtCacheContext {
         }
 
     fun <T> cacheContext(block: () -> T): T = getCacheObject().cacheContext(block)
-    fun clean() {
-        getCacheObject().clean()
-    }
 
     private fun getCacheObject(): KtCacheObject = threadLocal.getOrSet { KtCacheObject() }
 }

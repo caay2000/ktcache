@@ -25,14 +25,16 @@ internal class ItemApplicationTest {
     @Test
     fun `retrieve Item just calls repository 1 time`() {
 
-        whenever(itemRepository.findById(item.id)).thenReturn(item)
+        KtCache.cacheContext {
+            whenever(itemRepository.findById(item.id)).thenReturn(item)
 
-        val result = sut.retrieveItem(item.id)
+            val result = sut.retrieveItem(item.id)
 
-        assertThat(result).isEqualTo(item)
+            assertThat(result).isEqualTo(item)
 
-        verify(itemRepository, times(1)).findById(item.id)
-        KtCache.stats.assertCacheStatistics(1, 2, 1, 1)
+            verify(itemRepository, times(1)).findById(item.id)
+            KtCache.stats.assertCacheStatistics(1, 2, 1, 1)
+        }
     }
 
     private fun KtCacheStats.assertCacheStatistics(size: Int, accessCount: Int, hitCount: Int, missCount: Int) {

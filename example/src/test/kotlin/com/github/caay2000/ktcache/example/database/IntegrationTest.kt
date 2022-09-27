@@ -30,30 +30,37 @@ class IntegrationTest {
     @Test
     fun `retrieve Item just calls repository 1 time`() {
 
-        sut.create(item.id, item.name, item.value)
+        KtCache.cacheContext {
+            sut.create(item.id, item.name, item.value)
 
-        val result = sut.retrieveItem(item.id)
+            val result = sut.retrieveItem(item.id)
 
-        assertThat(result).isEqualTo(item)
-        KtCache.stats.assertCacheStatistics(1, 2, 1, 1)
+            assertThat(result).isEqualTo(item)
+            KtCache.stats.assertCacheStatistics(1, 2, 1, 1)
+        }
     }
 
     @Test
     fun `works when returning null`() {
 
-        val result = sut.getItemOrNull(UUID.randomUUID())
+        KtCache.cacheContext {
+            val result = sut.getItemOrNull(UUID.randomUUID())
 
-        assertThat(result).isEqualTo(null)
-        KtCache.stats.assertCacheStatistics(1, 1, 0, 1)
+            assertThat(result).isEqualTo(null)
+            KtCache.stats.assertCacheStatistics(1, 1, 0, 1)
+        }
     }
 
     @Test
     fun `works when returning Unit`() {
-        sut.create(item.id, item.name, item.value)
 
-        sut.doublePrinter(item.id)
+        KtCache.cacheContext {
 
-        KtCache.stats.assertCacheStatistics(1, 2, 1, 1)
+            sut.create(item.id, item.name, item.value)
+            sut.doublePrinter(item.id)
+
+            KtCache.stats.assertCacheStatistics(1, 2, 1, 1)
+        }
     }
 
     @Test
@@ -63,8 +70,8 @@ class IntegrationTest {
         repeat(10) {
             val result = sut.retrieveItem(item.id)
             assertThat(result).isEqualTo(item)
+            KtCache.stats.assertCacheStatistics(0, 0, 0, 0)
         }
-        KtCache.stats.assertCacheStatistics(1, 2, 1, 1)
     }
 
     @Test
@@ -74,13 +81,13 @@ class IntegrationTest {
 
         val result = sut.retrieveItem(item.id)
         assertThat(result).isEqualTo(item)
-        KtCache.stats.assertCacheStatistics(1, 2, 1, 1)
+        KtCache.stats.assertCacheStatistics(0, 0, 0, 0)
 
         sut.update(item.id, updatedItem.value)
         val updatedResult = sut.retrieveItem(item.id)
 
         assertThat(updatedResult).isEqualTo(updatedItem)
-        KtCache.stats.assertCacheStatistics(1, 2, 1, 1)
+        KtCache.stats.assertCacheStatistics(0, 0, 0, 0)
     }
 
     private fun KtCacheStats.assertCacheStatistics(size: Int, accessCount: Int, hitCount: Int, missCount: Int) {
@@ -89,5 +96,6 @@ class IntegrationTest {
         assertThat(this.hitCount).isEqualTo(hitCount)
         assertThat(this.missCount).isEqualTo(missCount)
         logger.info { this }
+        logger.info { KtCache.totalStats }
     }
 }
