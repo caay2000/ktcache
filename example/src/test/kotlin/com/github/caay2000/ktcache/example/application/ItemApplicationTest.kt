@@ -19,12 +19,11 @@ internal class ItemApplicationTest {
     private val item = Item(
         id = UUID.randomUUID(),
         name = "name",
-        value = 1
+        value = 1,
     )
 
     @Test
     fun `retrieve Item just calls repository 1 time`() {
-
         KtCache.cacheContext {
             whenever(itemRepository.findById(item.id)).thenReturn(item)
 

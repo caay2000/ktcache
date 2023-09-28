@@ -4,7 +4,7 @@ internal data class KtCacheStats internal constructor(
     var size: Int = 0,
     var accessCount: Int = 0,
     var hitCount: Int = 0,
-    var missCount: Int = 0
+    var missCount: Int = 0,
 ) {
 
     fun access() {

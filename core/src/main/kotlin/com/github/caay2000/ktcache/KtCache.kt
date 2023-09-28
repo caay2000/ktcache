@@ -23,6 +23,6 @@ object KtCache {
             size = this.size,
             accessCount = this.accessCount,
             hitCount = this.hitCount,
-            missCount = this.missCount
+            missCount = this.missCount,
         )
 }

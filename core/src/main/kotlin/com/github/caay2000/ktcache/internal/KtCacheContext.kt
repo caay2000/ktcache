@@ -21,7 +21,7 @@ internal class KtCacheContext {
                 size = this.size + ktCacheStats.size,
                 accessCount = this.accessCount + ktCacheStats.accessCount,
                 hitCount = this.hitCount + ktCacheStats.hitCount,
-                missCount = this.missCount + ktCacheStats.missCount
+                missCount = this.missCount + ktCacheStats.missCount,
             )
 
         @Synchronized
