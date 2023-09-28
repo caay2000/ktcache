@@ -2,10 +2,8 @@ package com.github.caay2000.ktcache.example.database
 
 import com.github.caay2000.ktcache.example.application.Item
 import com.github.caay2000.ktcache.example.application.ItemRepository
-// import org.springframework.stereotype.Repository
 import java.util.UUID
 
-// @Repository
 class ItemRepositoryImpl : ItemRepository {
 
     private val database: MutableMap<UUID, Item> = mutableMapOf()

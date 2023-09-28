@@ -5,7 +5,7 @@ import java.util.UUID
 data class Item(
     val id: UUID,
     val name: String,
-    val value: Int
+    val value: Int,
 ) {
 
     fun update(newValue: Int) = copy(value = newValue)

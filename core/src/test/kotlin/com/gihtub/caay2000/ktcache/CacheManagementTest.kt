@@ -18,7 +18,6 @@ class CacheManagementTest {
 
     @Test
     fun `cacheContext works as expected`() {
-
         cacheContext {
             testCacheInThread("no_context")
             KtCache.stats.assertCacheStatistics(size = 1, accessCount = 100, hitCount = 99, missCount = 1)
@@ -27,7 +26,6 @@ class CacheManagementTest {
 
     @Test
     fun `nested cacheContext works as expected`() {
-
         cacheContext {
             cacheContext {
                 testCacheInThread("no_context")
@@ -38,7 +36,6 @@ class CacheManagementTest {
 
     @Test
     fun `cache not working if context is not open`() {
-
         testCacheInThread("no_context")
         val cacheStatistics = KtCache.stats
         cacheStatistics.assertCacheStatistics(size = 0, accessCount = 0, hitCount = 0, missCount = 0)
@@ -46,7 +43,6 @@ class CacheManagementTest {
 
     @Test
     fun `cache is cleaned when new context is opened`() {
-
         cacheContext {
             testCacheInThread("no_context")
             KtCache.stats.assertCacheStatistics(size = 1, accessCount = 100, hitCount = 99, missCount = 1)
@@ -63,7 +59,6 @@ class CacheManagementTest {
 
     @Test
     fun `multiple caches in different threads does not conflict with cache`() {
-
         var statisticsCacheThread1: KtCacheStats? = null
         var statisticsCacheThread2: KtCacheStats? = null
 
@@ -98,7 +93,6 @@ class CacheManagementTest {
 
     @Test
     fun `multiple caches in different coroutines does not conflict with cache`() {
-
         var statisticsCacheThread1: KtCacheStats? = null
         var statisticsCacheThread2: KtCacheStats? = null
 
@@ -134,7 +128,6 @@ class CacheManagementTest {
 
     @Test
     fun `launch lot of coroutines`() {
-
         runBlocking {
             coroutineScope {
                 repeat(300) {

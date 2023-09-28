@@ -29,7 +29,6 @@ class IntegrationTest {
 
     @Test
     fun `retrieve Item just calls repository 1 time`() {
-
         KtCache.cacheContext {
             sut.create(item.id, item.name, item.value)
 
@@ -41,8 +40,20 @@ class IntegrationTest {
     }
 
     @Test
-    fun `works when returning null`() {
+    fun `works with multiple calls`() {
+        KtCache.cacheContext {
+            sut.create(item.id, item.name, item.value)
 
+            repeat(10) {
+                sut.printItem(item.id)
+            }
+
+            KtCache.stats.assertCacheStatistics(1, 10, 9, 1)
+        }
+    }
+
+    @Test
+    fun `works when returning null`() {
         KtCache.cacheContext {
             val result = sut.getItemOrNull(UUID.randomUUID())
 
@@ -53,9 +64,7 @@ class IntegrationTest {
 
     @Test
     fun `works when returning Unit`() {
-
         KtCache.cacheContext {
-
             sut.create(item.id, item.name, item.value)
             sut.doublePrinter(item.id)
 
@@ -65,7 +74,6 @@ class IntegrationTest {
 
     @Test
     fun `cache is cleaned for each request`() {
-
         sut.create(item.id, item.name, item.value)
         repeat(10) {
             val result = sut.retrieveItem(item.id)
@@ -76,7 +84,6 @@ class IntegrationTest {
 
     @Test
     fun `cache is cleaned for each request with update in between`() {
-
         sut.create(item.id, item.name, item.value)
 
         val result = sut.retrieveItem(item.id)

@@ -28,6 +28,11 @@ class ItemApplication(private val repository: ItemRepository) {
         logger.info { "Updated $item" }
     }
 
+    fun printItem(id: UUID): Unit =
+        cacheContext {
+            itemPrinter.invoke(id)
+        }
+
     fun retrieveItem(id: UUID): Item =
         cacheContext {
             itemPrinter.invoke(id)
