@@ -26,6 +26,18 @@ dependencies {
     testImplementation("ch.qos.logback:logback-classic:1.4.11")
 }
 
+tasks.jar {
+    manifest {
+        attributes(
+            mapOf(
+                "Implementation-Title" to "${rootProject.group}.${rootProject.name}-core",
+                "Implementation-Version" to version,
+            ),
+        )
+    }
+    archiveBaseName.set("${rootProject.group}.${rootProject.name}-core.${rootProject.version}")
+}
+
 fun String.isNonStable(): Boolean = listOf("SNAPSHOT", "RC", "BETA").any { uppercase().contains(it) }
 tasks.withType<DependencyUpdatesTask> {
     rejectVersionIf {

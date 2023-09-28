@@ -12,7 +12,7 @@ tasks.wrapper {
 }
 
 group = "com.github.caay2000.ktcache"
-version = "0.0.1-SNAPSHOT"
+version = "0.0.1"
 
 repositories {
     mavenCentral()
